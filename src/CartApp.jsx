@@ -3,6 +3,11 @@ import { getProducts } from "./services/productService";
 import CardProduct from "./components/CardProduct";
 import TableProduct from "./components/TableProduct";
 import { itemsReducer } from "./reducer/itemsReducer";
+import {
+  AddProductCart,
+  DeleteProductCart,
+  UpdateProductCart,
+} from "./reducer/itemsAction";
 
 const initialProducts = sessionStorage.getItem("cart")
   ? JSON.parse(sessionStorage.getItem("cart"))
@@ -18,28 +23,27 @@ const CartApp = () => {
     sessionStorage.setItem("cart", JSON.stringify(cartItem));
   }, [cartItem]);
 
-
   const handleAddProductCart = (product) => {
     const exist = cartItem.find((item) => item.product.id === product.id);
     if (exist) {
       dispatch({
-        type: "UpdateProductCart",
+        type: UpdateProductCart,
         payload: product,
       });
     } else {
       dispatch({
-        type: "AddProductCart",
+        type: AddProductCart,
         payload: product,
       });
     }
   };
 
   const handleDeleteProductCart = (id) => {
-  dispatch({
-    type: "DeleteProductCart",
-    payload: id,
-  })
-  }
+    dispatch({
+      type: DeleteProductCart,
+      payload: id,
+    });
+  };
 
   useEffect(() => {
     setProducts(getProducts());
